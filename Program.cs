@@ -27,7 +27,7 @@ internal class Program
             string command = "summerize this text";
 
 
-            await Cleaner.postreturn(client, command, "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", "gpt-3.5-turbo", "https://api.openai.com/v1/chat/completions");
+            await Cleaner.postreturn(client, command, ApiKey, "gpt-3.5-turbo", "https://api.openai.com/v1/chat/completions");
 
         }
         else
