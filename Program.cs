@@ -2,22 +2,94 @@
 using iText.Kernel.Pdf.Canvas.Parser;
 using iText.Kernel.Pdf.Canvas.Parser.Listener;
 using System.Text;
+using System;
 using System.Text.RegularExpressions;
+using System.Drawing;
+using System.Windows.Forms;
 
 internal class Program
 {
-    private static async Task Main(string[] args)
-    {
-        string url = "";
 
-        Console.WriteLine("1 for Url 2 for pdf-TextFile");
-        string tec = Console.ReadLine();
-        tec = "1";
+    public class form : Form {
 
-        if (tec == "1")
+        private TextBox urlTextBox;
+        private TextBox apiKeyTextBox;
+        private TextBox serviceUrlTextBox;
+        private Button button1;
+        private ComboBox serviceUrlCombobox;
+        public form()
+        {
+            InitializeComponent();
+            
+            
+        }
+
+        private void InitializeComponent()
+        {   
+
+          
+            
+
+            this.urlTextBox = new TextBox();
+            this.apiKeyTextBox = new TextBox();
+            this.serviceUrlTextBox = new TextBox();
+            this.serviceUrlCombobox= new ComboBox();
+            //this needs to have mutiple servies in it
+           this.serviceUrlCombobox.Items.Add("chatgpt");
+            this.button1 = new Button();
+            apiKeyTextBox.Location=new Point(urlTextBox.Location.X, urlTextBox.Location.Y + apiKeyTextBox.Height);
+            serviceUrlTextBox.Location = new Point(apiKeyTextBox.Location.X, apiKeyTextBox.Location.Y + serviceUrlTextBox.Height);
+            button1.Location = new Point(serviceUrlTextBox.Location.X , serviceUrlTextBox.Location.Y + button1.Height);
+            button1.Text = "Submit text";
+            this.urlTextBox.Text = "site for summerizer";
+            this.apiKeyTextBox.Text = "Api Key";
+            this.serviceUrlTextBox.Text = "Api url";
+
+            // Set properties for each control (size, position, etc.)
+
+            this.Controls.Add(this.urlTextBox);
+            this.Controls.Add(this.apiKeyTextBox);
+            this.Controls.Add(this.serviceUrlTextBox);
+            this.Controls.Add(this.button1);
+            this.button1.Click += new EventHandler(this.button1_Click);
+            
+
+        }
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+
+            
+        }
+        private void Resize(object sender, EventArgs e)
         {
 
-            Console.WriteLine("paste URL and Api key");
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string url = urlTextBox.Text;
+            string apiKey = apiKeyTextBox.Text;
+            string serviceUrl = serviceUrlTextBox.Text;
+            string temp = serviceUrlCombobox.SelectedText;
+            Console.WriteLine($"URL: {url}, API Key: {apiKey}, Service URL: {serviceUrl}");
+        }
+
+    }
+
+
+
+    private static async Task Main(string[] args)
+    {
+
+       form x = new form();
+        x.ShowDialog();
+        string url = "";
+        
+       
+        string tec = Console.ReadLine();
+        
+
+        Console.WriteLine("paste URL and Api key");
             string Url = Console.ReadLine();
             string ApiKey = Console.ReadLine();
 
@@ -29,8 +101,11 @@ internal class Program
 
             await Cleaner.postreturn(client, command, ApiKey, "gpt-3.5-turbo", "https://api.openai.com/v1/chat/completions");
 
-        }
-        else
+        
+
+        // removes due to the fact that you cant extract text from pdf that have a password or meaning full things
+        /*
+        else ()
         {
             string pdfFilePath = "path_to_your_pdf.pdf";
             string extractedText = ExtractTextFromPdf(pdfFilePath);
@@ -39,9 +114,11 @@ internal class Program
             static string ExtractTextFromPdf(string filePath)
             {
                 StringBuilder text = new StringBuilder();
+                
 
                 using (PdfReader pdfReader = new PdfReader(filePath))
-                {
+                {   
+                    
                     for (int page = 1; page <= pdfReader.GetNumberOfPages(); page++)
                     {
                         ITextExtractionStrategy strategy = new SimpleTextExtractionStrategy();
@@ -55,6 +132,7 @@ internal class Program
 
 
         }
+        */
     }
 }
 
